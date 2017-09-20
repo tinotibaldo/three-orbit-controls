@@ -329,6 +329,11 @@ module.exports = function (THREE) {
 
                 var element = scope.domElement === document ? scope.domElement.body : scope.domElement;
 
+                if (element.clientWidth === 0 || element.clientHeight === 0) {
+                    console.warn("WARNING: Cannot pan with undefined element size");
+                    return;
+                }
+
                 if (scope.object instanceof THREE.PerspectiveCamera) {
 
                     // perspective
@@ -439,6 +444,11 @@ module.exports = function (THREE) {
             rotateDelta.subVectors(rotateEnd, rotateStart);
 
             var element = scope.domElement === document ? scope.domElement.body : scope.domElement;
+
+            if (element.clientWidth === 0 || element.clientHeight === 0) {
+                console.warn("WARNING: Cannot rotate with undefined element size");
+                return;
+            }
 
             // rotating across whole screen goes 360 degrees around
             scope.rotateLeft(2 * Math.PI * rotateDelta.x / element.clientWidth * scope.rotateSpeed);
