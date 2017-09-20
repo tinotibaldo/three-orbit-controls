@@ -2,4 +2,5 @@ bower_components
 node_modules
 *.log
 .DS_Store
+.idea
 bundle.js

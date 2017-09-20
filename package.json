@@ -1,6 +1,6 @@
 {
-  "name": "three-orbit-controls",
-  "version": "82.1.0",
+  "name": "ndb-three-orbit-controls",
+  "version": "82.1.1",
   "description": "orbit controls for ThreeJS",
   "main": "index.js",
   "license": "MIT",
@@ -32,10 +32,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/mattdesl/three-orbit-controls.git"
+    "url": "git://github.com/pedson/three-orbit-controls.git"
   },
-  "homepage": "https://github.com/mattdesl/three-orbit-controls",
+  "homepage": "https://github.com/pedson/three-orbit-controls",
   "bugs": {
-    "url": "https://github.com/mattdesl/three-orbit-controls/issues"
+    "url": "https://github.com/pedson/three-orbit-controls/issues"
   }
 }
