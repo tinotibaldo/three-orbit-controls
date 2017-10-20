@@ -242,6 +242,10 @@ module.exports = function (THREE) {
 
         };
 
+        this.pan = function(x, y) {
+            pan(x, y);
+        };
+
         //
         // internals
         //
