@@ -1,6 +1,6 @@
 {
-  "name": "ndb-three-orbit-controls",
-  "version": "87.0.2",
+  "name": "tinotibaldo-three-orbit-controls",
+  "version": "87.0.3",
   "description": "orbit controls for ThreeJS",
   "main": "index.js",
   "license": "MIT",
