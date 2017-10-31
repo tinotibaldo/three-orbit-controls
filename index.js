@@ -107,7 +107,7 @@ module.exports = function (THREE) {
             scope.object.updateProjectionMatrix();
             
             changeEvent.mouse_or_touch_event = undefined;
-            scope.dispatchEvent(changeEvent);
+            scope.dispatchEvent(changeEvent, {'detail': changeEvent.mouse_or_touch_event});
 
             scope.update();
 
@@ -197,7 +197,7 @@ module.exports = function (THREE) {
                     8 * ( 1 - lastQuaternion.dot(scope.object.quaternion) ) > EPS) {
 
                     changeEvent.mouse_or_touch_event = event ? event : undefined;
-                    scope.dispatchEvent(changeEvent);
+                    scope.dispatchEvent(changeEvent, {'detail': changeEvent.mouse_or_touch_event});
 
                     lastPosition.copy(scope.object.position);
                     lastQuaternion.copy(scope.object.quaternion);
@@ -228,7 +228,7 @@ module.exports = function (THREE) {
 
             window.removeEventListener('keydown', onKeyDown, false);
 
-            //scope.dispatchEvent( { type: 'dispose' } ); // should this be added here?
+            //scope.dispatchEvent( {, {'detail': changeEvent.mouse_or_touch_event} type: 'dispose' } ); // should this be added here?
 
         };
 
@@ -259,6 +259,7 @@ module.exports = function (THREE) {
         var changeEvent = {type: 'change'};
         var startEvent = {type: 'start'};
         var endEvent = {type: 'end'};
+        var moveEvent = {type: 'move'};
 
         var STATE = {NONE: -1, ROTATE: 0, DOLLY: 1, PAN: 2, TOUCH_ROTATE: 3, TOUCH_DOLLY: 4, TOUCH_PAN: 5};
 
@@ -716,7 +717,7 @@ module.exports = function (THREE) {
                 document.addEventListener('mousemove', onMouseMove, false);
                 document.addEventListener('mouseup', onMouseUp, false);
                 startEvent.mouse_or_touch_event = event;
-                scope.dispatchEvent(startEvent);
+                scope.dispatchEvent(startEvent, {'detail': changeEvent.mouse_or_touch_event});
 
             }
 
@@ -759,7 +760,7 @@ module.exports = function (THREE) {
             document.removeEventListener('mousemove', onMouseMove, false);
             document.removeEventListener('mouseup', onMouseUp, false);
             endEvent.mouse_or_touch_event = event;
-            scope.dispatchEvent(endEvent);
+            scope.dispatchEvent(endEvent, {'detail': changeEvent.mouse_or_touch_event});
 
             state = STATE.NONE;
 
@@ -776,8 +777,8 @@ module.exports = function (THREE) {
 
             startEvent.mouse_or_touch_event = event;
             endEvent.mouse_or_touch_event = event;
-            scope.dispatchEvent(startEvent); // not sure why these are here...
-            scope.dispatchEvent(endEvent);
+            scope.dispatchEvent(startEvent, {'detail': changeEvent.mouse_or_touch_event}); // not sure why these are here...
+            scope.dispatchEvent(endEvent, {'detail': changeEvent.mouse_or_touch_event});
 
         }
 
@@ -841,7 +842,7 @@ module.exports = function (THREE) {
 
             if (state !== STATE.NONE) {
                 startEvent.mouse_or_touch_event = event;
-                scope.dispatchEvent(startEvent);
+                scope.dispatchEvent(startEvent, {'detail': changeEvent.mouse_or_touch_event});
 
             }
 
@@ -898,7 +899,7 @@ module.exports = function (THREE) {
             handleTouchEnd(event);
 
             endEvent.mouse_or_touch_event = event;
-            scope.dispatchEvent(endEvent);
+            scope.dispatchEvent(endEvent, {'detail': changeEvent.mouse_or_touch_event});
 
             state = STATE.NONE;
 
