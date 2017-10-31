@@ -1,12 +1,12 @@
 {
   "name": "ndb-three-orbit-controls",
-  "version": "82.1.3",
+  "version": "87.0.1",
   "description": "orbit controls for ThreeJS",
   "main": "index.js",
   "license": "MIT",
   "author": {
-    "name": "Matt DesLauriers",
-    "email": "dave.des@gmail.com",
+    "name": "Matt DesLauriers, Tino Tibaldo",
+    "email": "dave.des@gmail.com, juan.agustin.tibaldo@gmail.com",
     "url": "https://github.com/mattdesl"
   },
   "dependencies": {},

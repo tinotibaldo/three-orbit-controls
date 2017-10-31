@@ -5,6 +5,7 @@ module.exports = function (THREE) {
      * @author alteredq / http://alteredqualia.com/
      * @author WestLangley / http://github.com/WestLangley
      * @author erich666 / http://erichaines.com
+     * @author tinotibaldo / http://tibaldo.io
      */
 
 // This set of controls performs orbiting, dollying (zooming), and panning.
@@ -71,7 +72,7 @@ module.exports = function (THREE) {
         this.enableKeys = true;
 
         // The four arrow keys
-        this.keys = {LEFT: 37, UP: 38, RIGHT: 39, BOTTOM: 40};
+        this.keys = {LEFT: 37, UP: 38, RIGHT: 39, BOTTOM: 40, SHIFT : 16};
 
         // Mouse buttons
         this.mouseButtons = {ORBIT: THREE.MOUSE.LEFT, ZOOM: THREE.MOUSE.MIDDLE, PAN: THREE.MOUSE.RIGHT};
@@ -104,6 +105,8 @@ module.exports = function (THREE) {
             scope.object.zoom = scope.zoom0;
 
             scope.object.updateProjectionMatrix();
+            
+            changeEvent.mouse_or_touch_event = undefined;
             scope.dispatchEvent(changeEvent);
 
             scope.update();
@@ -124,7 +127,7 @@ module.exports = function (THREE) {
             var lastPosition = new THREE.Vector3();
             var lastQuaternion = new THREE.Quaternion();
 
-            return function update() {
+            return function update(event) {
 
                 var position = scope.object.position;
 
@@ -193,6 +196,7 @@ module.exports = function (THREE) {
                     lastPosition.distanceToSquared(scope.object.position) > EPS ||
                     8 * ( 1 - lastQuaternion.dot(scope.object.quaternion) ) > EPS) {
 
+                    changeEvent.mouse_or_touch_event = event ? event : undefined;
                     scope.dispatchEvent(changeEvent);
 
                     lastPosition.copy(scope.object.position);
@@ -462,7 +466,7 @@ module.exports = function (THREE) {
 
             rotateStart.copy(rotateEnd);
 
-            scope.update();
+            scope.update(event);
 
         }
 
@@ -486,7 +490,7 @@ module.exports = function (THREE) {
 
             dollyStart.copy(dollyEnd);
 
-            scope.update();
+            scope.update(event);
 
         }
 
@@ -502,7 +506,7 @@ module.exports = function (THREE) {
 
             panStart.copy(panEnd);
 
-            scope.update();
+            scope.update(event);
 
         }
 
@@ -526,8 +530,15 @@ module.exports = function (THREE) {
 
             }
 
-            scope.update();
+            scope.update(event);
 
+        }
+
+        function handleKeyUp( event ) {
+                
+                if (scope.shift_pressed) {
+                    scope.key_pressed = undefined;
+                }
         }
 
         function handleKeyDown(event) {
@@ -538,24 +549,27 @@ module.exports = function (THREE) {
 
                 case scope.keys.UP:
                     pan(0, scope.keyPanSpeed);
-                    scope.update();
+                    scope.update(event);
                     break;
 
                 case scope.keys.BOTTOM:
                     pan(0, -scope.keyPanSpeed);
-                    scope.update();
+                    scope.update(event);
                     break;
 
                 case scope.keys.LEFT:
                     pan(scope.keyPanSpeed, 0);
-                    scope.update();
+                    scope.update(event);
                     break;
 
                 case scope.keys.RIGHT:
                     pan(-scope.keyPanSpeed, 0);
-                    scope.update();
+                    scope.update(event);
                     break;
 
+                case scope.keys.SHIFT:
+                    scope.key_pressed = scope.keys.SHIFT;
+                break;
             }
 
         }
@@ -606,7 +620,7 @@ module.exports = function (THREE) {
 
             rotateStart.copy(rotateEnd);
 
-            scope.update();
+            scope.update(event);
 
         }
 
@@ -635,7 +649,7 @@ module.exports = function (THREE) {
 
             dollyStart.copy(dollyEnd);
 
-            scope.update();
+            scope.update(event);
 
         }
 
@@ -651,7 +665,7 @@ module.exports = function (THREE) {
 
             panStart.copy(panEnd);
 
-            scope.update();
+            scope.update(event);
 
         }
 
@@ -701,7 +715,7 @@ module.exports = function (THREE) {
 
                 document.addEventListener('mousemove', onMouseMove, false);
                 document.addEventListener('mouseup', onMouseUp, false);
-
+                startEvent.mouse_or_touch_event = event;
                 scope.dispatchEvent(startEvent);
 
             }
@@ -744,7 +758,7 @@ module.exports = function (THREE) {
 
             document.removeEventListener('mousemove', onMouseMove, false);
             document.removeEventListener('mouseup', onMouseUp, false);
-
+            endEvent.mouse_or_touch_event = event;
             scope.dispatchEvent(endEvent);
 
             state = STATE.NONE;
@@ -760,6 +774,8 @@ module.exports = function (THREE) {
 
             handleMouseWheel(event);
 
+            startEvent.mouse_or_touch_event = event;
+            endEvent.mouse_or_touch_event = event;
             scope.dispatchEvent(startEvent); // not sure why these are here...
             scope.dispatchEvent(endEvent);
 
@@ -770,6 +786,14 @@ module.exports = function (THREE) {
             if (scope.enabled === false || scope.enableKeys === false || scope.enablePan === false) return;
 
             handleKeyDown(event);
+
+        }
+
+        function onKeyUp( event ) {
+
+            if ( scope.enabled === false || scope.enableKeys === false || scope.enablePan === false ) return;
+
+            handleKeyUp( event );
 
         }
 
@@ -816,7 +840,7 @@ module.exports = function (THREE) {
             }
 
             if (state !== STATE.NONE) {
-
+                startEvent.mouse_or_touch_event = event;
                 scope.dispatchEvent(startEvent);
 
             }
@@ -873,6 +897,7 @@ module.exports = function (THREE) {
 
             handleTouchEnd(event);
 
+            endEvent.mouse_or_touch_event = event;
             scope.dispatchEvent(endEvent);
 
             state = STATE.NONE;
@@ -897,6 +922,7 @@ module.exports = function (THREE) {
         scope.domElement.addEventListener('touchmove', onTouchMove, false);
 
         window.addEventListener('keydown', onKeyDown, false);
+        window.addEventListener( 'keyup', onKeyUp, false );
 
         // force an update at start
 
