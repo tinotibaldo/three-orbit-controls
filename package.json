@@ -1,6 +1,6 @@
 {
   "name": "ndb-three-orbit-controls",
-  "version": "87.0.1",
+  "version": "87.0.2",
   "description": "orbit controls for ThreeJS",
   "main": "index.js",
   "license": "MIT",
