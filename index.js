@@ -519,7 +519,8 @@ module.exports = function (THREE) {
 
         function handleMouseWheel(event) {
 
-            //console.log( 'handleMouseWheel' );
+        changeEvent.mouse_or_touch_event = event;
+        scope.dispatchEvent( moveEvent, {'detail': changeEvent.mouse_or_touch_event} );
 
             if (event.deltaY < 0) {
 
@@ -725,6 +726,9 @@ module.exports = function (THREE) {
 
         function onMouseMove(event) {
 
+            moveEvent.mouse_or_touch_event = event;
+            scope.dispatchEvent( moveEvent, {'detail': moveEvent.mouse_or_touch_event} );
+
             if (scope.enabled === false) return;
 
             event.preventDefault();
@@ -849,6 +853,10 @@ module.exports = function (THREE) {
         }
 
         function onTouchMove(event) {
+
+
+        moveEvent.mouse_or_touch_event = event;
+        scope.dispatchEvent( moveEvent, {'detail': moveEvent.mouse_or_touch_event} );
 
             if (scope.enabled === false) return;
 

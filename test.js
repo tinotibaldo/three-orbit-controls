@@ -29,7 +29,9 @@ function start(gl, width, height) {
     camera.lookAt(new THREE.Vector3())
 
     controls = new OrbitControls(camera)
-
+    controls.addEventListener('start', console.log(this.mouse_or_touch_event));
+    controls.addEventListener('end', console.log(this.mouse_or_touch_event));
+    controls.addEventListener('move', console.log(this.mouse_or_touch_event));
     var geo = new THREE.BoxGeometry(1,1,1)
     var mat = new THREE.MeshBasicMaterial({ wireframe: true, color: 0xffffff })
     var box = new THREE.Mesh(geo, mat)
